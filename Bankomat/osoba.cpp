@@ -27,7 +27,7 @@ void wyswietl_stan_konta(double stan_konta)
 	cout << stan_konta;
 }
 
-bool weryfikacja(int karta,int insert_pin)
+bool klient:: weryfikacja(int karta,int insert_pin)
 {
 	if (nr_karty == karta)
 	{

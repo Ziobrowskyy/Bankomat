@@ -102,7 +102,7 @@ int main()
 			{
 				//insert karta
 				//werify karta
-				// osoba.wyswietl_stan_konta();
+				//osoba.wyswietl_stan_konta();
 
 				break;
 			}
