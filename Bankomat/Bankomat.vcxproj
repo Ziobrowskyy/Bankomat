@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="co i jak.cpp" />
     <ClCompile Include="karta.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="osoba.cpp" />
