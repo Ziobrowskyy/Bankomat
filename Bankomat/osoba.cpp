@@ -9,12 +9,10 @@ public:
 	bool weryfikacja(int karta,int insert_pin);
 
 private:
-
-	string imie;
-	string nazwisko;
-
 	long int nr_konta;
 	double stan_konta;
+	int limit;
+
 
 	int nr_karty;
 	int pin;
