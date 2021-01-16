@@ -1,11 +1,11 @@
 #include<iostream>
 #include"osoba.cpp"
 #include"karta.cpp"
-#include"banknot.cpp"
-#include"BLIK.cpp"
+#include"Banknot.cpp"
+#include"Blik.cpp"
 
 
-
+int bilans;
 
 using namespace std;
 
@@ -45,8 +45,8 @@ int main()
 				{
 					switch (wybor)
 					{
-					case 1://karta
-					{
+						case 1://karta
+						{
 						//pobrac karte, zczytac z niej nr karty, 
 						//wysylamy nr karty do sieci i oczekujemy informacji zwrotnej o nr konta, limicie, pinie, stanie œrodków
 						//pobieramy PIN i sprawdzamy
@@ -60,10 +60,10 @@ int main()
 							while (true) {
 								cout << "WprowadŸ banknot" << endl;
 								//Pobieramy banknot, skanujemy, otrzymujemy informacjê zwrotna o nominale i potencjalnych uszkodzeniach
-								stan_piniendzy = stan_piniendzy + banknot.nominal;
+								stan_piniendzy = stan_piniendzy + Banknot.nominal;
 
 								cout << stan_piniendzy;
-								
+
 								cout << "wybierz co dalej:" << endl;
 								cout << "wybierz 1 - kontynuuj wp³acanie banknotów" << endl;
 								cout << "wybierz 2 - zakoñcz wp³atê" << endl;
@@ -74,27 +74,28 @@ int main()
 									break;
 								}
 							}
+							bilans = bilans +stan_piniendzy;
 							//wysy³amy informacjê do systemu z wp³aconymi piniêdzmi na zadany nr konta
 							//zwracamy kartê
 							//drukujemy potwierdzenie
 						}
 						break;
 					}
-					case 2://BLiK
-					{
-						int BLIK;
-						cin >> BLIK;
+						case 2://BLiK
+						{
+						int BLIk;
+						cin >> BLIk;
 
 						//wysylamy kod BLIK do sieci i oczekujemy na potwierdzenie
-						bool weryfikacja = BLIK.weryfikacja(BLIK);
-							
+						bool weryfikacja = BLIK.weryfikacja(BLIk);
+
 						if (weryfikacja == true) {
 							int stan_piniendzy = 0;
 
 							while (true) {
 								cout << "WprowadŸ banknot" << endl;
 								//Pobieramy banknot, skanujemy, otrzymujemy informacjê zwrotna o nominale i potencjalnych uszkodzeniach
-								stan_piniendzy = stan_piniendzy + banknot.nominal;
+								stan_piniendzy = stan_piniendzy + Banknot.nominal;
 
 								cout << stan_piniendzy;
 
@@ -108,17 +109,17 @@ int main()
 									break;
 								}
 							}
+							bilans = bilans + stan_piniendzy;
 							//wysy³amy informacjê do systemu z wp³aconymi piniêdzmi na zadany nr konta
 							//zwracamy kartê
 							//drukujemy potwierdzenie
 						}
 						break;
 					}
-
-					case 3://anuluj
-					{
-						break;
-					}
+						case 3://anuluj
+						{
+							break;
+						}
 
 					}
 				}
@@ -143,12 +144,74 @@ int main()
 					{
 					case 1://karta
 					{
+						//pobrac karte, zczytac z niej nr karty, 
+						//wysylamy nr karty do sieci i oczekujemy informacji zwrotnej o nr konta, limicie, pinie, stanie œrodków
+						//pobieramy PIN i sprawdzamy
+
+						int PIN;
+						cin >> PIN;
+
+						if (PIN == karta.pin)
+						{
+							int kwota = 0;
+
+							cout << "podaj kwotê wyp³aty, podzieln¹ przez 10" << endl;
+							cin >> kwota;
+
+							if (kwota % 10 == 0)
+							{	
+								if (kwota <= osoba.stan_konta && kwota <= osoba.limit && bilans > kwota)
+								{
+									//wyp³aæ kwota
+									bilans = bilans - kwota;
+
+									//wysy³amy informacjê do systemu z wyp³aconymi piniêdzmi z zadanego nr konta
+									//zwracamy kartê
+									//drukujemy potwierdzenie
+								}
+								else cout << "operacja nie mo¿e zostaæ wykoana" << endl;
+									//potwierdzenie
+								
+							
+							}
+
+						}
 						break;
 					}
-
 					case 2://blik
 					{
+						int BLIk;
+						cin >> BLIk;
+						BLIK BL= new BLIK ;
+						 
+						//wysylamy kod BLIK do sieci i oczekujemy na potwierdzenie
+						bool weryfikacja = BLIK.weryfikacja(BLIk);
 
+						if (weryfikacja == true) 
+						{
+							int kwota = 0;
+
+							cout << "podaj kwotê wyp³aty, podzieln¹ przez 10" << endl;
+							cin >> kwota;
+
+							if (kwota % 10 == 0)
+							{
+								if (BL.wyplata(BLIk, kwota) == true && bilans > kwota)
+								{
+									//wyp³aæ kwota
+									bilans = bilans - kwota;
+
+									//wysy³amy informacjê do systemu z wyp³aconymi piniêdzmi z zadanego nr konta
+									//zwracamy kartê
+									//drukujemy potwierdzenie
+								}
+								else cout << "operacja nie mo¿e zostaæ wykoana" << endl;
+								//potwierdzenie
+
+
+							}
+
+						}
 						break;
 					}
 

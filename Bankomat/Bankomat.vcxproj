@@ -139,6 +139,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Banknot.cpp" />
+    <ClCompile Include="Blik.cpp" />
     <ClCompile Include="co i jak.cpp" />
     <ClCompile Include="karta.cpp" />
     <ClCompile Include="main.cpp" />
