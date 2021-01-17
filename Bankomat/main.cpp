@@ -125,6 +125,7 @@ int main()
 				}
 				
 				break;
+
 			}
 			
 			case 2://wylata
@@ -136,7 +137,6 @@ int main()
 				cout << "wybierz 3 - anuluj" << endl;
 
 				cin >> wybor;
-
 
 				switch (wybor)
 				{
