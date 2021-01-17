@@ -1,17 +1,28 @@
-#include<iostream>
-
+#pragma once
 using namespace std;
 
-class Karta
-{
+class Karta {
 public:
-	int skan(); //zczytujemy z karty nr karty
-
+	Karta();
+	Karta(int nr_karty, int pin);
+	int skan();
 protected:
 
 	int nr_karty;
 	int pin;
 
-	friend class Klient;
+	friend class Transakcja_karta;
 };
 
+Karta::Karta() :nr_karty(-1), pin(0000)
+{
+}
+
+Karta::Karta(int nr_karty, int pin) : nr_karty(nr_karty), pin(pin)
+{
+}
+
+int Karta::skan()
+{
+	return 0;
+}

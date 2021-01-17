@@ -1,57 +1,25 @@
-#include<iostream>
-#include "osoba.cpp"
-#include "karta.cpp"
-
+#pragma once
+#include <iostream>
 using namespace std;
 
-class Klient : public Osoba
+class Klient
 {
 public:
-	Klient (){
-
-	}
-	void wyswietl_stan_konta(double stan_konta);
-	bool weryfikacja(int karta,int insert_pin);
-	bool weryfikacja(int insert_pin);
-	Karta getKarta();
+	Klient(int nr_konta, double stan_konta);
+	void wyswietl_stan_konta();
 
 private:
 
 	long int nr_konta;
 	double stan_konta;
-	int limit;
-
-	Karta karta;
-
 };
 
-void wyswietl_stan_konta(double stan_konta)
+Klient::Klient(int nr_konta, double stan_konta): nr_konta(nr_konta), stan_konta(stan_konta)
+{
+}
+
+void Klient::wyswietl_stan_konta()
 {
 	cout << " stan konta wynosi:" << endl;
 	cout << stan_konta;
-}
-
-bool Klient::weryfikacja(int karta, int insert_pin)
-{
-	
-	if (this->karta.nr_karty == karta && this->karta.pin == insert_pin)
-	{
-		return true;
-	}
-	return false;
-
-}
-bool Klient::weryfikacja(int insert_pin)
-{
-	
-	if (this->karta.pin == insert_pin)
-	{
-		return true;
-	}
-	return false;
-
-}
-
-Karta Klient::getKarta() {
-	return this->karta;
 }

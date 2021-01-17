@@ -1,13 +1,14 @@
+#pragma once
 #include<iostream>
-#define DEBUG true
+#define DEBUG_BANKNOT true
 using namespace std;
-enum EBanknot {
+enum struct EBanknot {
 	DOBRY,
 	USZKODZONY,
 	KRADZIONY,
 	NIEPOPRAWNY
 };
-enum ENominal {
+enum struct ENominal {
 	BLEDNY = 0,
 	N10 = 10,
 	N20 = 20,
@@ -16,7 +17,7 @@ enum ENominal {
 	N200 = 200,
 	N500 = 500
 };
-enum EWaluta {
+enum struct EWaluta {
 	PLN, 
 	USD, 
 	EUR,
@@ -34,7 +35,7 @@ public:
 	Banknot();
 
 	int pobierz_wartosc() {
-		return nominal;
+		return (int)nominal;
 	}
 
 private:
@@ -46,9 +47,9 @@ private:
 };
 
 Banknot::Banknot() {
-	if (DEBUG) {
-		stan = DOBRY;
-		waluta = PLN;
+	if (DEBUG_BANKNOT) {
+		stan = EBanknot::DOBRY;
+		waluta = EWaluta::PLN;
 
 		cout << "Podaj nomina³ banknotu" << endl;
 		int nominal;
@@ -57,31 +58,31 @@ Banknot::Banknot() {
 		switch (nominal)
 		{
 		case 10: {
-			this->nominal = N10;
+			this->nominal = ENominal::N10;
 			break;
 		}
 		case 20: {
-			this->nominal = N20;
+			this->nominal = ENominal::N20;
 			break;
 		}
 		case 50: {
-			this->nominal = N50;
+			this->nominal = ENominal::N50;
 			break;
 		}
 		case 100: {
-			this->nominal = N100;
+			this->nominal = ENominal::N100;
 			break;
 		}
 		case 200: {
-			this->nominal = N200;
+			this->nominal = ENominal::N200;
 			break;
 		}
 		case 500: {
-			this->nominal = N500;
+			this->nominal = ENominal::N500;
 			break;
 		}
 		default:
-			this->nominal = BLEDNY;
+			this->nominal = ENominal::BLEDNY;
 			break;
 		}
 	}

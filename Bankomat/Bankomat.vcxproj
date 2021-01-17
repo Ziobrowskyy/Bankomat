@@ -92,6 +92,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -139,12 +140,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Banknot.cpp" />
-    <ClCompile Include="Blik.cpp" />
-    <ClCompile Include="co i jak.cpp" />
+    <ClCompile Include="banknot.cpp" />
+    <ClCompile Include="bankomat.cpp" />
+    <ClCompile Include="co i jak.txt" />
     <ClCompile Include="karta.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="osoba.cpp" />
+    <ClCompile Include="klient.cpp" />
+    <ClCompile Include="system_bankowy.cpp" />
+    <ClCompile Include="transakcja.cpp" />
+    <ClCompile Include="transakcja_blik.cpp" />
+    <ClCompile Include="transakcja_karta.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

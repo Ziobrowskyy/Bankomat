@@ -1,10 +1,8 @@
-#include<iostream>
-#include"klient.cpp"
-#include"bankomat.cpp"
-#include"karta.cpp"
-#include"Banknot.cpp"
-#include"Blik.cpp"
-
+#pragma once
+#include "bankomat.cpp"
+#include "transakcja_blik.cpp"
+#include "transakcja_karta.cpp"
+#include <iostream>
 using namespace std;
 
 int main() 
@@ -24,14 +22,11 @@ int main()
 
 		cin >> wybor;
 
-		if (wybor > 0 && wybor < 6)
+		switch (wybor)
 		{
-
-			switch (wybor)
-			{
 			case 1://wplata
 			{
-
+				ETyp_transakcji typ_transakcji = WPLATA;
 				cout << "wybierz typ transakcji:" << endl;
 				cout << "wybierz 1 - karta" << endl;
 				cout << "wybierz 2 - blik" << endl;
@@ -39,92 +34,92 @@ int main()
 
 				cin >> wybor;
 
-				if (wybor > 0 && wybor < 4)
+				
+				switch (wybor)
 				{
-					switch (wybor)
+					case 1://karta
 					{
-						case 1://karta
-						{
 						//pobrac karte, zczytac z niej nr karty, 
 						//wysylamy nr karty do sieci i oczekujemy informacji zwrotnej o nr konta, limicie, pinie, stanie œrodków
 						//pobieramy PIN i sprawdzamy
-						bankomat.wprowadz_karte();
-						bankomat.wprowadz_pin();
-
-						if(bankomat.sprawdz_pin())
+						int wprowadzona_karta = bankomat.wprowadz_karte();
+						int wprowadzony_pin = bankomat.wprowadz_pin();
+						Transakcja_karta transakcja = Transakcja_karta(typ_transakcji, wprowadzona_karta);
+						if (transakcja.sprawdz_pin(wprowadzony_pin))
 						{
-							int stan_piniendzy_tansakcji = 0;
 							bool kontynuacja_transakcji = true;
 							do {
 								//Pobieramy banknot, skanujemy, otrzymujemy informacjê zwrotna o nominale i potencjalnych uszkodzeniach
 								int kwota_banknotu = bankomat.wprowadz_banknot();
-								stan_piniendzy_tansakcji += kwota_banknotu;
+								transakcja.zmien_kwote_tranakcji(kwota_banknotu);
 
 								cout << "Dotychczas wprowadzona kwota wynosi:\t";
-								cout << stan_piniendzy_tansakcji;
+								cout << transakcja.pobierz_kwote_tranakcji();
 
 								cout << "Wybierz co dalej:" << endl;
 								cout << "1 - kontynuuj wp³acanie banknotów" << endl;
 								cout << "2 - zakoñcz wp³atê" << endl;
 
-								int wybor;
+								cin >> wybor;
 								if (wybor == 2)
 									kontynuacja_transakcji = false;
 							} while (kontynuacja_transakcji);
-							
+
+							//TODO:
 							//wysy³amy informacjê do systemu z wp³aconymi piniêdzmi na zadany nr konta
 							//zwracamy kartê
 							//drukujemy potwierdzenie
 						}
 						break;
 					}
-						case 2://BLiK
+					case 2://BLiK
+					{
+						//pobrac karte, zczytac z niej nr karty, 
+						//wysylamy nr karty do sieci i oczekujemy informacji zwrotnej o nr konta, limicie, pinie, stanie œrodków
+						//pobieramy PIN i sprawdzamy
+						int wprowadzony_kod_blik = bankomat.wprowadz_blik();
+						Transakcja_blik transakcja = Transakcja_blik(typ_transakcji);
+						transakcja.ustaw_kod_blik(wprowadzony_kod_blik);
+						if (transakcja.sprawdz_kod_blik())
 						{
-						int BLIk;
-						cin >> BLIk;
-
-						//wysylamy kod BLIK do sieci i oczekujemy na potwierdzenie
-						bool weryfikacja = BLIK.weryfikacja(BLIk);
-
-						if (weryfikacja == true) {
-							int stan_piniendzy = 0;
-
-							while (true) {
-								cout << "WprowadŸ banknot" << endl;
+							bool kontynuacja_transakcji = true;
+							do {
 								//Pobieramy banknot, skanujemy, otrzymujemy informacjê zwrotna o nominale i potencjalnych uszkodzeniach
-								stan_piniendzy = stan_piniendzy + Banknot.nominal;
+								int kwota_banknotu = bankomat.wprowadz_banknot();
+								transakcja.zmien_kwote_tranakcji(kwota_banknotu);
 
-								cout << stan_piniendzy;
+								cout << "Dotychczas wprowadzona kwota wynosi:\t";
+								cout << transakcja.pobierz_kwote_tranakcji() << endl;
 
-								cout << "wybierz co dalej:" << endl;
-								cout << "wybierz 1 - kontynuuj wp³acanie banknotów" << endl;
-								cout << "wybierz 2 - zakoñcz wp³atê" << endl;
+								cout << "Wybierz co dalej:" << endl;
+								cout << "1 - kontynuuj wp³acanie banknotów" << endl;
+								cout << "2 - zakoñcz wp³atê" << endl;
 
-								int parametr;
-								cin >> parametr;
-								if (parametr == 2) {
-									break;
-								}
-							}
-							bilans = bilans + stan_piniendzy;
+								cin >> wybor;
+								if (wybor == 2)
+									kontynuacja_transakcji = false;
+							} while (kontynuacja_transakcji);
+
+							//TODO:
 							//wysy³amy informacjê do systemu z wp³aconymi piniêdzmi na zadany nr konta
 							//zwracamy kartê
 							//drukujemy potwierdzenie
 						}
 						break;
 					}
-						case 3://anuluj
-						{
-							break;
-						}
-
+					case 3://anuluj
+					{
+						break;
+					}
+					default: {
+						cout << "Nieprawidlowy wybor" << endl;
+						break;
 					}
 				}
-				else cout << "nieprawidlowy wybor" << endl;
-
+				
 				break;
 			}
-
+			/*
 			case 2://wyplata
 			{
 
@@ -135,10 +130,8 @@ int main()
 
 				cin >> wybor;
 
-				if (wybor > 0 && wybor < 4)
+				switch (wybor)
 				{
-					switch (wybor)
-					{
 					case 1://karta
 					{
 						//pobrac karte, zczytac z niej nr karty, 
@@ -156,7 +149,7 @@ int main()
 							cin >> kwota;
 
 							if (kwota % 10 == 0)
-							{	
+							{
 								if (kwota <= osoba.stan_konta && kwota <= osoba.limit && bilans > kwota)
 								{
 									//wyp³aæ kwota
@@ -167,9 +160,9 @@ int main()
 									//drukujemy potwierdzenie
 								}
 								else cout << "operacja nie mo¿e zostaæ wykoana" << endl;
-									//potwierdzenie
-								
-							
+								//potwierdzenie
+
+
 							}
 
 						}
@@ -179,12 +172,12 @@ int main()
 					{
 						int BLIk;
 						cin >> BLIk;
-						BLIK BL= new BLIK ;
-						 
+						BLIK BL = new BLIK;
+
 						//wysylamy kod BLIK do sieci i oczekujemy na potwierdzenie
 						bool weryfikacja = BLIK.weryfikacja(BLIk);
 
-						if (weryfikacja == true) 
+						if (weryfikacja == true)
 						{
 							int kwota = 0;
 
@@ -211,16 +204,15 @@ int main()
 						}
 						break;
 					}
-
 					case 3://anuluj
 					{
 						break;
 					}
-
+					default: {
+						cout << "Nieprawidlowy wybor" << endl;
+						break;
 					}
 				}
-				else cout << "nieprawidlowy wybor" << endl;
-
 				break;
 			}
 
@@ -237,15 +229,17 @@ int main()
 			{
 				break;
 			}
+
 			case 5://dostêp s³u¿bowy
 			{
 				break;
 			}
+			*/
+			default: {
+				cout << "Nieprawidlowy wybor" << endl;
+				break;
 			}
-
 		}
-		else cout << "nieprawidlowy wybor" << endl;
-
 
 		system("pause");
 
