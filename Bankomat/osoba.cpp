@@ -1,41 +1,20 @@
-#include<iostream>
+#include<string>
 using namespace std;
-
-class klient
-{
-public:
-
-	void wyswietl_stan_konta(double stan_konta);
-	bool weryfikacja(int karta,int insert_pin);
-
-private:
-
-	long int nr_konta;
-	double stan_konta;
-	int limit;
-
-
-	int nr_karty;
-	int pin;
-
+class Osoba {
+	string imie;
+	string nazwisko;
+	Data data_urodzenia;
+	int PESEL;
+	Osoba() : data_urodzenia(10,10,10) {
+	}
 };
 
-void wyswietl_stan_konta(double stan_konta)
-{
-	cout << " stan konta wynosi:" << endl;
-	cout << stan_konta;
-}
-
-bool klient:: weryfikacja(int karta,int insert_pin)
-{
-	if (nr_karty == karta)
-	{
-		if (pin == insert_pin)
-		{
-			return true;
-		}
-		else return false;
+class Data {
+	int dzien;
+	int miesiac;
+	int rok;
+public: 
+	Data(int dzien, int miesiac, int rok) : dzien(dzien), miesiac(miesiac), rok(rok) {
 	}
-	else return false;
+};
 
-}

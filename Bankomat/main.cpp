@@ -1,18 +1,16 @@
 #include<iostream>
-#include"osoba.cpp"
+#include"klient.cpp"
+#include"bankomat.cpp"
 #include"karta.cpp"
 #include"Banknot.cpp"
 #include"Blik.cpp"
-
-
-int bilans;
 
 using namespace std;
 
 int main() 
 {
+	Bankomat bankomat;
 	int wybor;
-
 	do 
 	{
 
@@ -50,31 +48,30 @@ int main()
 						//pobrac karte, zczytac z niej nr karty, 
 						//wysylamy nr karty do sieci i oczekujemy informacji zwrotnej o nr konta, limicie, pinie, stanie œrodków
 						//pobieramy PIN i sprawdzamy
+						bankomat.wprowadz_karte();
+						bankomat.wprowadz_pin();
 
-						int PIN;
-						cin >> PIN;
-
-						if (PIN == karta.pin) {
-							int stan_piniendzy = 0;
-
-							while (true) {
-								cout << "WprowadŸ banknot" << endl;
+						if(bankomat.sprawdz_pin())
+						{
+							int stan_piniendzy_tansakcji = 0;
+							bool kontynuacja_transakcji = true;
+							do {
 								//Pobieramy banknot, skanujemy, otrzymujemy informacjê zwrotna o nominale i potencjalnych uszkodzeniach
-								stan_piniendzy = stan_piniendzy + Banknot.nominal;
+								int kwota_banknotu = bankomat.wprowadz_banknot();
+								stan_piniendzy_tansakcji += kwota_banknotu;
 
-								cout << stan_piniendzy;
+								cout << "Dotychczas wprowadzona kwota wynosi:\t";
+								cout << stan_piniendzy_tansakcji;
 
-								cout << "wybierz co dalej:" << endl;
-								cout << "wybierz 1 - kontynuuj wp³acanie banknotów" << endl;
-								cout << "wybierz 2 - zakoñcz wp³atê" << endl;
+								cout << "Wybierz co dalej:" << endl;
+								cout << "1 - kontynuuj wp³acanie banknotów" << endl;
+								cout << "2 - zakoñcz wp³atê" << endl;
 
-								int parametr;
-								cin >> parametr;
-								if (parametr == 2) {
-									break;
-								}
-							}
-							bilans = bilans +stan_piniendzy;
+								int wybor;
+								if (wybor == 2)
+									kontynuacja_transakcji = false;
+							} while (kontynuacja_transakcji);
+							
 							//wysy³amy informacjê do systemu z wp³aconymi piniêdzmi na zadany nr konta
 							//zwracamy kartê
 							//drukujemy potwierdzenie
@@ -151,7 +148,7 @@ int main()
 						int PIN;
 						cin >> PIN;
 
-						if (PIN == karta.pin)
+						if (PIN == Karta.pin)
 						{
 							int kwota = 0;
 
@@ -252,7 +249,7 @@ int main()
 
 		system("pause");
 
-	}while (true);
+	} while (true);
 
 	return 0;
 }

@@ -1,18 +1,17 @@
 #include<iostream>
+
 using namespace std;
 
-class karta
+class Karta
 {
 public:
 	int skan(); //zczytujemy z karty nr karty
-	osoba informacje(int nr_karty_bankomatowej);
 
+protected:
 
-private:
-
-	int nr_karty_bankomatowej;
+	int nr_karty;
 	int pin;
 
-
+	friend class Klient;
 };
 
