@@ -17,7 +17,7 @@ int main()
 		cout << "wybierz 2 - wyplata" << endl;
 		cout << "wybierz 3 - sprawdzenie stanu konta" << endl;
 		cout << "wybierz 4 - anuluj" << endl;
-		cout << "wybierz 5 - dostêp s³u¿bowy" << endl;
+		cout << "wybierz 5 - dostep sluzbowy" << endl;
 
 
 		cin >> wybor;
@@ -45,6 +45,7 @@ int main()
 						int wprowadzona_karta = bankomat.wprowadz_karte();
 						int wprowadzony_pin = bankomat.wprowadz_pin();
 						Transakcja_karta transakcja = Transakcja_karta(typ_transakcji, wprowadzona_karta);
+
 						if (transakcja.sprawdz_pin(wprowadzony_pin))
 						{
 							bool kontynuacja_transakcji = true;
@@ -53,16 +54,22 @@ int main()
 								int kwota_banknotu = bankomat.wprowadz_banknot();
 								transakcja.zmien_kwote_tranakcji(kwota_banknotu);
 
-								cout << "Dotychczas wprowadzona kwota wynosi:\t";
-								cout << transakcja.pobierz_kwote_tranakcji();
+								if (kwota_banknotu == 0) {
+									cout << "Nieporawny nonimal banknotu" << endl;
+								}
+								else {
+									cout << "Dotychczas wprowadzona kwota wynosi:\t";
+									cout << transakcja.pobierz_kwote_tranakcji() << endl;
+								}
 
 								cout << "Wybierz co dalej:" << endl;
-								cout << "1 - kontynuuj wp³acanie banknotów" << endl;
-								cout << "2 - zakoñcz wp³atê" << endl;
+								cout << "1 - kontynuuj wplacanie banknotow" << endl;
+								cout << "2 - zakoncz wplate" << endl;
 
 								cin >> wybor;
 								if (wybor == 2)
 									kontynuacja_transakcji = false;
+
 							} while (kontynuacja_transakcji);
 
 							//TODO:
@@ -92,8 +99,8 @@ int main()
 								cout << transakcja.pobierz_kwote_tranakcji() << endl;
 
 								cout << "Wybierz co dalej:" << endl;
-								cout << "1 - kontynuuj wp³acanie banknotów" << endl;
-								cout << "2 - zakoñcz wp³atê" << endl;
+								cout << "1 - kontynuuj wplacanie banknotow" << endl;
+								cout << "2 - zakoncz wplate" << endl;
 
 								cin >> wybor;
 								if (wybor == 2)
@@ -119,10 +126,10 @@ int main()
 				
 				break;
 			}
-			/*
-			case 2://wyplata
+			
+			case 2://wylata
 			{
-
+				ETyp_transakcji typ_transakcji = WYPLATA;
 				cout << "wybierz typ transakcji:" << endl;
 				cout << "wybierz 1 - karta" << endl;
 				cout << "wybierz 2 - blik" << endl;
@@ -130,77 +137,147 @@ int main()
 
 				cin >> wybor;
 
+
+				switch (wybor)
+				{
+				case 1://karta
+				{
+					//pobrac karte, zczytac z niej nr karty, 
+					//wysylamy nr karty do sieci i oczekujemy informacji zwrotnej o nr konta, limicie, pinie, stanie œrodków
+					//pobieramy PIN i sprawdzamy
+					int wprowadzona_karta = bankomat.wprowadz_karte();
+					int wprowadzony_pin = bankomat.wprowadz_pin();
+					Transakcja_karta transakcja = Transakcja_karta(typ_transakcji, wprowadzona_karta);
+
+					bool prawidlowy_pin = transakcja.sprawdz_pin(wprowadzony_pin);
+
+					if (!prawidlowy_pin) {
+						cout << "Nieprawidlowy PIN" << endl;
+					}
+					else {
+						//pobierz kwote transakcji
+						int kwota_transakcji = bankomat.pobierz_kwote_wyplaty();
+
+						transakcja.zmien_kwote_tranakcji(kwota_transakcji);
+						
+						//sprawdz czy kwota moze byc wyplacona przez bankomat oraz stan konta
+						bool czy_mozna_wyplacic = true;
+						if (!bankomat.czy_mozna_wyplacic(kwota_transakcji)) {
+							cout << "Brak wystarczajacych srodkow w bankomacie" << endl;
+							czy_mozna_wyplacic = false;
+						}
+						else if (!transakcja.czy_mozna_wyplacic()) {
+							cout << "Brak wystarczajacych srodkow na koncie" << endl;
+							czy_mozna_wyplacic = false;
+						}
+
+						//przejdz do wyplaty jesli warunki zostaly spelnione
+						if (czy_mozna_wyplacic) {
+							//TODO: wyplac srodki z bankomatu
+							//wysy³amy informacjê do systemu z wp³aconymi piniêdzmi na zadany nr konta
+							//zwracamy kartê
+							//drukujemy potwierdzenie
+						}
+					}
+					break;
+				}
+				case 2://BLiK
+				{
+					//pobrac karte, zczytac z niej nr karty, 
+					//wysylamy nr karty do sieci i oczekujemy informacji zwrotnej o nr konta, limicie, pinie, stanie œrodków
+					//pobieramy PIN i sprawdzamy
+					int wprowadzony_kod_blik = bankomat.wprowadz_blik();
+					Transakcja_blik transakcja = Transakcja_blik(typ_transakcji);
+					transakcja.ustaw_kod_blik(wprowadzony_kod_blik);
+					if (!transakcja.sprawdz_kod_blik()) {
+						cout << "Nieprawidlowy kod BLIK" << endl;
+					}
+					else {
+						//pobierz kwote transakcji
+						int kwota_transakcji = bankomat.pobierz_kwote_wyplaty();
+
+						transakcja.zmien_kwote_tranakcji(kwota_transakcji);
+
+						//sprawdz czy kwota moze byc wyplacona przez bankomat oraz stan konta
+						bool czy_mozna_wyplacic = true;
+						if (!bankomat.czy_mozna_wyplacic(kwota_transakcji)) {
+							cout << "Brak wystarczajacych srodkow w bankomacie" << endl;
+							czy_mozna_wyplacic = false;
+						}
+						else if (!transakcja.czy_mozna_wyplacic()) {
+							cout << "Brak wystarczajacych srodkow na koncie" << endl;
+							czy_mozna_wyplacic = false;
+						}
+
+						//przejdz do wyplaty jesli warunki zostaly spelnione
+						if (czy_mozna_wyplacic) {
+							//TODO: wyplac srodki z bankomatu
+							//wysy³amy informacjê do systemu z wp³aconymi piniêdzmi na zadany nr konta
+							//zwracamy kartê
+							//drukujemy potwierdzenie
+						}
+					}
+					break;
+				}
+				case 3://anuluj
+				{
+					break;
+				}
+				default: {
+					cout << "Nieprawidlowy wybor" << endl;
+					break;
+				}
+				}
+
+				break;
+			}
+			
+			case 3://wyœwietl stan konta
+			{
+				ETyp_transakcji typ_transakcji = STAN_KONTA;
+				cout << "wybierz typ transakcji:" << endl;
+				cout << "wybierz 1 - karta" << endl;
+				cout << "wybierz 2 - blik" << endl;
+				cout << "wybierz 3 - anuluj" << endl;
+
+				cin >> wybor;
+
+
 				switch (wybor)
 				{
 					case 1://karta
 					{
-						//pobrac karte, zczytac z niej nr karty, 
-						//wysylamy nr karty do sieci i oczekujemy informacji zwrotnej o nr konta, limicie, pinie, stanie œrodków
-						//pobieramy PIN i sprawdzamy
+						int wprowadzona_karta = bankomat.wprowadz_karte();
+						int wprowadzony_pin = bankomat.wprowadz_pin();
+						Transakcja_karta transakcja = Transakcja_karta(typ_transakcji, wprowadzona_karta);
 
-						int PIN;
-						cin >> PIN;
+						bool prawidlowy_pin = transakcja.sprawdz_pin(wprowadzony_pin);
 
-						if (PIN == Karta.pin)
-						{
-							int kwota = 0;
-
-							cout << "podaj kwotê wyp³aty, podzieln¹ przez 10" << endl;
-							cin >> kwota;
-
-							if (kwota % 10 == 0)
-							{
-								if (kwota <= osoba.stan_konta && kwota <= osoba.limit && bilans > kwota)
-								{
-									//wyp³aæ kwota
-									bilans = bilans - kwota;
-
-									//wysy³amy informacjê do systemu z wyp³aconymi piniêdzmi z zadanego nr konta
-									//zwracamy kartê
-									//drukujemy potwierdzenie
-								}
-								else cout << "operacja nie mo¿e zostaæ wykoana" << endl;
-								//potwierdzenie
-
-
-							}
-
+						if (!prawidlowy_pin) {
+							cout << "Nieprawidlowy PIN" << endl;
+						}
+						else {
+							double stan_konta = transakcja.pobierz_stan_konta();
+							cout << "Stan konta wynosi: " << endl;
+							cout << stan_konta << endl;
 						}
 						break;
 					}
-					case 2://blik
+					case 2://BLiK
 					{
-						int BLIk;
-						cin >> BLIk;
-						BLIK BL = new BLIK;
-
-						//wysylamy kod BLIK do sieci i oczekujemy na potwierdzenie
-						bool weryfikacja = BLIK.weryfikacja(BLIk);
-
-						if (weryfikacja == true)
-						{
-							int kwota = 0;
-
-							cout << "podaj kwotê wyp³aty, podzieln¹ przez 10" << endl;
-							cin >> kwota;
-
-							if (kwota % 10 == 0)
-							{
-								if (BL.wyplata(BLIk, kwota) == true && bilans > kwota)
-								{
-									//wyp³aæ kwota
-									bilans = bilans - kwota;
-
-									//wysy³amy informacjê do systemu z wyp³aconymi piniêdzmi z zadanego nr konta
-									//zwracamy kartê
-									//drukujemy potwierdzenie
-								}
-								else cout << "operacja nie mo¿e zostaæ wykoana" << endl;
-								//potwierdzenie
-
-
-							}
-
+						//pobrac karte, zczytac z niej nr karty, 
+						//wysylamy nr karty do sieci i oczekujemy informacji zwrotnej o nr konta, limicie, pinie, stanie œrodków
+						//pobieramy PIN i sprawdzamy
+						int wprowadzony_kod_blik = bankomat.wprowadz_blik();
+						Transakcja_blik transakcja = Transakcja_blik(typ_transakcji);
+						transakcja.ustaw_kod_blik(wprowadzony_kod_blik);
+						if (!transakcja.sprawdz_kod_blik()) {
+							cout << "Nieprawidlowy kod BLIK" << endl;
+						}
+						else {
+							double stan_konta = transakcja.pobierz_stan_konta();
+							cout << "Stan konta wynosi: " << endl;
+							cout << stan_konta << endl;
 						}
 						break;
 					}
@@ -213,18 +290,10 @@ int main()
 						break;
 					}
 				}
-				break;
-			}
-
-			case 3://wyœwietl stan konta
-			{
-				//insert karta
-				//werify karta
-				//osoba.wyswietl_stan_konta();
 
 				break;
 			}
-
+			
 			case 4://anuluj
 			{
 				break;
@@ -232,10 +301,61 @@ int main()
 
 			case 5://dostêp s³u¿bowy
 			{
+				cout << "wybierz typ dostepu:" << endl;
+				cout << "wybierz 1 - serwisant" << endl;
+				cout << "wybierz 2 - konwojent" << endl;
+				cout << "wybierz 3 - anuluj" << endl;
+				cin >> wybor;
+
+				switch (wybor)
+				{
+					case 1: //serwisant 
+					{
+
+						int id_pracownika = bankomat.wprowadz_id_pracownika();
+						int kod_dostepu = bankomat.wprowadz_kod_dostepu();
+						Dostep_sluzbowy dostep = Dostep_sluzbowy(SERWIS, id_pracownika);
+						if (!dostep.weryfikacja_pracownika(kod_dostepu)) {
+							cout << "Nieprawidlowy kod dostepu lub id pracownika" << endl;
+						}
+						else {
+							cout << "Mozesz teraz przeprowadzic czynnosci serwisowe" << endl;
+							system("pause");
+							cout << "Zakonczono przeprowadzenie czynnosci serwisowych" << endl;
+						}
+						break;
+					}
+					case 2: //konwojent
+					{
+						int id_pracownika = bankomat.wprowadz_id_pracownika();
+						int kod_dostepu = bankomat.wprowadz_kod_dostepu();
+						Dostep_sluzbowy dostep = Dostep_sluzbowy(KONWOJENT, id_pracownika);
+						if (!dostep.weryfikacja_pracownika(kod_dostepu)) {
+							cout << "Nieprawidlowy kod dostepu lub id pracownika" << endl;
+						}
+						else {
+							cout << "Umozliwono dostep do systemu pienieznego bankomatu. Przeproadz czynnosci konwojenckie." << endl;
+							system("pause");
+							cout << "Zablokowano dostep do systemu pienieznego bankomatu. Zakocznono przeproawdzenie czynnosci serwisowych" << endl;
+						}
+						break;
+					}
+					case 3: //anuluj
+					{
+						break;
+					}
+					default: 
+					{
+						cout << "Nieprawidlowy wybor" << endl;
+						break;
+					}
+				}
+
 				break;
 			}
-			*/
-			default: {
+			
+			default: 
+			{
 				cout << "Nieprawidlowy wybor" << endl;
 				break;
 			}

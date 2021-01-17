@@ -14,7 +14,11 @@ public:
 	int wprowadz_pin();
 	int wprowadz_banknot();
 	int wprowadz_blik();
+	int pobierz_kwote_wyplaty();
 	void dodaj_srodki(int srodki);
+	bool czy_mozna_wyplacic(int kwota);
+	int wprowadz_id_pracownika();
+	int wprowadz_kod_dostepu();
 
 private:
 	int srodki = rand() % 9000 + 1000;
@@ -53,7 +57,42 @@ int Bankomat::wprowadz_blik()
 	return blik;
 }
 
+int Bankomat::pobierz_kwote_wyplaty()
+{
+	cout << "Wprowadz kwote do wyplacenia:" << endl;
+	int kwota;
+	cin >> kwota;
+	if (kwota % 10 == 0 && kwota > 0) {
+		return kwota;
+	}
+	else {
+		cout << "Niepoprawna kwota transakcji" << endl;
+		return 0;
+	}
+}
+
 void Bankomat::dodaj_srodki(int srodki)
 {
 
+}
+
+bool Bankomat::czy_mozna_wyplacic(int kwota)
+{
+	return kwota < this->srodki;
+}
+
+int Bankomat::wprowadz_id_pracownika()
+{
+	cout << "Podaj id pracownika" << endl;
+	int id;
+	cin >> id;
+	return id;
+}
+
+int Bankomat::wprowadz_kod_dostepu()
+{
+	cout << "Podaj kod dostepu" << endl;
+	int kod;
+	cin >> kod; 
+	return kod;
 }
