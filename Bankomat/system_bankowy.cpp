@@ -1,16 +1,20 @@
 #pragma once
-#include "klient.cpp"
 #include "karta.cpp"
-#include "dostep_sluzbowy.cpp"
+#include "klient.cpp"
+
 #define DEBUG_SYSTEM_BANKOWY true
+Klient* klient1 = new Klient(1234, 1000);
 class System_Bankowy {
 public:
 	static Karta pobierz_dane_karty(int nr_karty);
 	static bool zasil_konto(Klient klient, int kwota);
+	static bool obciaz_konto(Klient klient, int kwota);
 	static Klient* pobierz_klienta(Karta karta);
 	static bool zweryfikuj_kod_blik(int kod_blik);
 	static Klient* pobierz_klienta(int kod_blik);
-	static bool weryfikacja_pracownika(ETyp_dostepu typ_dostepu, int nr_pracownika, int kod_dostepu);
+	static bool weryfikacja_pracownika(int nr_pracownika, int kod_dostepu);
+private:
+
 };
 
 Karta System_Bankowy::pobierz_dane_karty(int nr_karty) {
@@ -27,32 +31,46 @@ Karta System_Bankowy::pobierz_dane_karty(int nr_karty) {
 }
 
 bool System_Bankowy::zasil_konto(Klient klient, int kwota) {
-
-	return true;
+	if (DEBUG_SYSTEM_BANKOWY) {
+		klient.stan_konta += kwota;
+		return true;
+	}
+	return false;
 }
 
+bool System_Bankowy::obciaz_konto(Klient klient, int kwota)
+{
+	if (DEBUG_SYSTEM_BANKOWY) {
+		klient.stan_konta -= kwota;
+		return true;
+	}
+	return false;
+}
 Klient* System_Bankowy::pobierz_klienta(Karta karta)
 {
 	if (DEBUG_SYSTEM_BANKOWY) {
-		return new Klient(789456123, 1500);
+		return klient1;
 	}
 	else {
 		//TODO:
 		//pobierz dane klienta z bazy danych na podstawie karty
-	}
-}
-Klient* System_Bankowy::pobierz_klienta(int kod_blik)
-{
-	if (DEBUG_SYSTEM_BANKOWY) {
-		return new Klient(789456123, 1500);
-	}
-	else {
-		//TODO:
-		//pobierz dane klienta z bazy danych na podstawie karty
+		return nullptr; 
 	}
 }
 
-bool System_Bankowy::weryfikacja_pracownika(ETyp_dostepu typ_dostepu, int nr_pracownika, int kod_dostepu)
+Klient* System_Bankowy::pobierz_klienta(int kod_blik)
+{
+	if (DEBUG_SYSTEM_BANKOWY) {
+		return klient1;
+	}
+	else {
+		//TODO:
+		//pobierz dane klienta z bazy danych na podstawie karty
+		return nullptr;
+	}
+}
+
+bool System_Bankowy::weryfikacja_pracownika(int nr_pracownika, int kod_dostepu)
 {
 	if (DEBUG_SYSTEM_BANKOWY) {
 		//sprawdz haslo
@@ -60,10 +78,10 @@ bool System_Bankowy::weryfikacja_pracownika(ETyp_dostepu typ_dostepu, int nr_pra
 			return false;
 		}
 		//sprawdz czy typ pracownika jest odpowiedni
-		if (nr_pracownika < 1000 && typ_dostepu == KONWOJENT) { //konwojent
+		if (nr_pracownika < 1000) { //konwojent
 			return true;
 		}
-		else if(nr_pracownika >= 1000 && nr_pracownika < 2000 && typ_dostepu == SERWIS) { // serwisant
+		else if(nr_pracownika >= 1000 && nr_pracownika < 2000) { // serwisant
 			return true;
 		}
 		return false;
@@ -76,7 +94,7 @@ bool System_Bankowy::weryfikacja_pracownika(ETyp_dostepu typ_dostepu, int nr_pra
 bool System_Bankowy::zweryfikuj_kod_blik(int kod_blik)
 {
 	if (DEBUG_SYSTEM_BANKOWY) {
-		return true;
+		return kod_blik % 2 == 0 && kod_blik > 1000;
 	}
 	else {
 		//TODO:

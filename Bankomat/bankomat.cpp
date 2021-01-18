@@ -16,6 +16,7 @@ public:
 	int wprowadz_blik();
 	int pobierz_kwote_wyplaty();
 	void dodaj_srodki(int srodki);
+	void operacja_konwojenta();
 	bool czy_mozna_wyplacic(int kwota);
 	int wprowadz_id_pracownika();
 	int wprowadz_kod_dostepu();
@@ -74,6 +75,11 @@ int Bankomat::pobierz_kwote_wyplaty()
 void Bankomat::dodaj_srodki(int srodki)
 {
 
+}
+
+void Bankomat::operacja_konwojenta()
+{
+	srodki = 1000;
 }
 
 bool Bankomat::czy_mozna_wyplacic(int kwota)

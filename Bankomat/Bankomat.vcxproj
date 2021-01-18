@@ -144,6 +144,7 @@
     <ClCompile Include="banknot.cpp" />
     <ClCompile Include="bankomat.cpp" />
     <ClCompile Include="co i jak.txt" />
+    <ClCompile Include="dostep_sluzbowy.cpp" />
     <ClCompile Include="karta.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="klient.cpp" />

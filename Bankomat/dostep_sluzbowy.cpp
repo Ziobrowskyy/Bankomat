@@ -21,5 +21,5 @@ Dostep_sluzbowy::Dostep_sluzbowy(ETyp_dostepu typ_dostepu, int id_pracownika) : 
 
 bool Dostep_sluzbowy::weryfikacja_pracownika(int kod_dostepu)
 {
-	return System_Bankowy::weryfikacja_pracownika(this->typ_dostepu, this->id_pracownika, kod_dostepu);
+	return System_Bankowy::weryfikacja_pracownika(this->id_pracownika, kod_dostepu);
 }

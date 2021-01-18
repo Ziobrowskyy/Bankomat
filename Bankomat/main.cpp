@@ -2,6 +2,7 @@
 #include "bankomat.cpp"
 #include "transakcja_blik.cpp"
 #include "transakcja_karta.cpp"
+#include "dostep_sluzbowy.cpp"
 #include <iostream>
 using namespace std;
 
@@ -11,7 +12,7 @@ int main()
 	int wybor;
 	do 
 	{
-
+		system("cls");
 		cout << "wybierz rodzaj transakcji:" << endl;
 		cout << "wybierz 1 - wplata" << endl;
 		cout << "wybierz 2 - wyplata" << endl;
@@ -74,11 +75,19 @@ int main()
 									kontynuacja_transakcji = false;
 
 							} while (kontynuacja_transakcji);
-
-							//TODO:
+							
 							//wysy³amy informacjê do systemu z wp³aconymi piniêdzmi na zadany nr konta
 							//zwracamy kartê
 							//drukujemy potwierdzenie
+
+							int rezultat_transakcji = transakcja.zakoncz_transakcje();
+
+							if (rezultat_transakcji) {
+								cout << "Transakcja zakonczona pomyslnie" << endl;
+							}
+							else {
+								cout << "Transakcja zakonczona niepowodzeniem" << endl;
+							}
 						}
 						break;
 					}
@@ -111,10 +120,18 @@ int main()
 									kontynuacja_transakcji = false;
 							} while (kontynuacja_transakcji);
 
-							//TODO:
 							//wysy³amy informacjê do systemu z wp³aconymi piniêdzmi na zadany nr konta
 							//zwracamy kartê
 							//drukujemy potwierdzenie
+
+							int rezultat_transakcji = transakcja.zakoncz_transakcje();
+
+							if (rezultat_transakcji) {
+								cout << "Transakcja zakonczona pomyslnie" << endl;
+							}
+							else {
+								cout << "Transakcja zakonczona niepowodzeniem" << endl;
+							}
 						}
 						break;
 					}
@@ -181,10 +198,21 @@ int main()
 						//przejdz do wyplaty jesli warunki zostaly spelnione
 						if (czy_mozna_wyplacic) 
 						{
-							//TODO: wyplac srodki z bankomatu
 							//wysy³amy informacjê do systemu z wp³aconymi piniêdzmi na zadany nr konta
 							//zwracamy kartê
 							//drukujemy potwierdzenie
+
+							int rezultat_transakcji = transakcja.zakoncz_transakcje();
+
+							if (rezultat_transakcji) {
+								cout << "Transakcja zakonczona pomyslnie" << endl;
+							}
+							else {
+								cout << "Transakcja zakonczona niepowodzeniem" << endl;
+							}
+						}
+						else {
+							cout << "Transakcja zakonczona niepowodzeniem" << endl;
 						}
 					}
 					break;
@@ -222,12 +250,23 @@ int main()
 						}
 
 						//przejdz do wyplaty jesli warunki zostaly spelnione
-						if (czy_mozna_wyplacic) 
+						if (czy_mozna_wyplacic)
 						{
-							//TODO: wyplac srodki z bankomatu
 							//wysy³amy informacjê do systemu z wp³aconymi piniêdzmi na zadany nr konta
 							//zwracamy kartê
 							//drukujemy potwierdzenie
+
+							int rezultat_transakcji = transakcja.zakoncz_transakcje();
+
+							if (rezultat_transakcji) {
+								cout << "Transakcja zakonczona pomyslnie" << endl;
+							}
+							else {
+								cout << "Transakcja zakonczona niepowodzeniem" << endl;
+							}
+						}
+						else {
+							cout << "Transakcja zakonczona niepowodzeniem" << endl;
 						}
 					}
 					break;
@@ -359,6 +398,7 @@ int main()
 						{
 							cout << "Umozliwono dostep do systemu pienieznego bankomatu. Przeproadz czynnosci konwojenckie." << endl;
 							system("pause");
+							
 							cout << "Zablokowano dostep do systemu pienieznego bankomatu. Zakocznono przeproawdzenie czynnosci serwisowych" << endl;
 						}
 						break;

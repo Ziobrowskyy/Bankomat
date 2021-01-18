@@ -45,6 +45,9 @@
     <ClCompile Include="co i jak.txt">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="dostep_sluzbowy.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
